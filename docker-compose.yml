@@ -1,0 +1,50 @@
+version: "3.9"
+
+services:
+  agent:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    environment:
+      - ANTHROPIC_API_KEY
+      - DISPLAY=:99
+      - SCREEN_WIDTH=1280
+      - SCREEN_HEIGHT=800
+      - VNC_ENABLED=0
+    volumes:
+      - recordings:/tmp/agent_sessions
+    shm_size: "512m"
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - SYS_PTRACE  # Chrome sandbox
+    restart: "no"
+
+  agent-vnc:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    environment:
+      - ANTHROPIC_API_KEY
+      - DISPLAY=:99
+      - SCREEN_WIDTH=1280
+      - SCREEN_HEIGHT=800
+      - VNC_ENABLED=1
+    ports:
+      - "5999:5999"  # VNC for live debugging
+    volumes:
+      - recordings:/tmp/agent_sessions
+    shm_size: "512m"
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - SYS_PTRACE
+    profiles:
+      - debug
+
+volumes:
+  recordings:
