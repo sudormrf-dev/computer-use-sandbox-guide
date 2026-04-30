@@ -22,6 +22,7 @@ from typing import Any
 # Stub for the agent loop — replace with actual Anthropic SDK calls
 # ---------------------------------------------------------------------------
 
+
 async def _fake_screenshot() -> bytes:
     """Simulate taking a screenshot (returns synthetic bytes)."""
     return hashlib.sha256(str(time.time()).encode()).digest()
@@ -55,7 +56,7 @@ async def run_secure_agent(
     task: str,
     max_steps: int = 20,
     session_id: str | None = None,
-    output_dir: Path = Path("/tmp/agent_sessions"),
+    output_dir: Path = Path("/tmp/agent_sessions"),  # nosec B108
 ) -> dict[str, Any]:
     """Run a computer-use agent with full isolation and observability.
 
@@ -87,7 +88,7 @@ async def run_secure_agent(
     display_cfg = VirtualDisplayConfig(width=1280, height=800)
 
     # In CI / environments without Xvfb, skip the display start
-    _display_available = os.environ.get("DISPLAY") or Path("/tmp/.X99-lock").exists()
+    _display_available = os.environ.get("DISPLAY") or Path("/tmp/.X99-lock").exists()  # nosec B108
     display = VirtualDisplay(display_cfg)
     if not _display_available:
         print(f"[{sid}] No display available — skipping Xvfb start (CI mode)")

@@ -66,7 +66,7 @@ def annotate_screenshot(
     try:
         import io
 
-        from PIL import Image, ImageDraw, ImageFont  # type: ignore[import]
+        from PIL import Image, ImageDraw, ImageFont
     except ImportError as e:
         msg = "Pillow is required for annotation: pip install Pillow"
         raise ImportError(msg) from e
@@ -83,7 +83,7 @@ def annotate_screenshot(
     try:
         font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf", 14)
     except OSError:
-        font = ImageFont.load_default()
+        font = ImageFont.load_default()  # type: ignore[assignment]
 
     action_type = action.get("action_type", "unknown")
     params = action.get("params", {})

@@ -30,6 +30,7 @@ from typing import Any
 # Helpers
 # ---------------------------------------------------------------------------
 
+
 async def _noop_action(**_kwargs: Any) -> str:
     """Simulate a trivially fast action."""
     await asyncio.sleep(0)
@@ -79,7 +80,7 @@ async def bench_recorder_log(n: int) -> list[float]:
     """Overhead of AgentRecorder.log_action() per action."""
     from patterns.recording_observability import AgentRecorder
 
-    output_dir = Path("/tmp/bench_recorder")
+    output_dir = Path("/tmp/bench_recorder")  # nosec B108
     samples = []
     async with AgentRecorder(session_id="bench", output_dir=output_dir, record_video=False) as rec:
         for i in range(n):
@@ -124,7 +125,7 @@ async def bench_full_stack(n: int) -> list[float]:
     from patterns.retry_deterministic import DeterministicRetry
     from patterns.ux_transparency import ActionNarrator
 
-    output_dir = Path("/tmp/bench_full")
+    output_dir = Path("/tmp/bench_full")  # nosec B108
     watchdog = AgentWatchdog(max_duration_seconds=3600, stuck_timeout_seconds=300)
     retry = DeterministicRetry(max_attempts=1)
     narrator = ActionNarrator()
